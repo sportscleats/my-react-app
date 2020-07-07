@@ -11,6 +11,7 @@ import { useStaticQuery, graphql } from "gatsby"
 
 import Header from './header'
 import './layout.css'
+import Footer from "./Footer"
 
 const Layout = ({ children }) => {
   const data = useStaticQuery(graphql`
@@ -18,6 +19,17 @@ const Layout = ({ children }) => {
       site {
         siteMetadata {
           title
+          description
+          keywords
+        }
+      }
+      allContentfulLink(sort: { fields: [createdAt], order: ASC}) {
+        edges{
+          node {
+            title
+            url
+            createdAt
+          }
         }
       }
     }
@@ -27,11 +39,11 @@ const Layout = ({ children }) => {
     <>
         <Header />
         <main>{children}</main>
-        <footer>
-          © {new Date().getFullYear()}, Practice project by
+        <Footer data={data}>
+        © {new Date().getFullYear()}, Practice project by
           {` `}
           <a href="https://nickbable.com">Nick</a>
-        </footer>
+        </Footer>
     </>
   )
 }
